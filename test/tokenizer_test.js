@@ -22,22 +22,6 @@ test('handling arrays', function () {
   deepEqual(tokens, tags)
 })
 
-test('removing punctuation', function () {
-  var fullStop = 'hello.',
-      innerApostrophe = "it's",
-      trailingApostrophe = "james' ball",
-      exclamationMark = 'stop!',
-      comma = 'first, second and third',
-      brackets = '[tag] non-tag'
-
-  deepEqual(lunr.tokenizer(fullStop), ['hello'])
-  deepEqual(lunr.tokenizer(innerApostrophe), ["it's"])
-  deepEqual(lunr.tokenizer(trailingApostrophe), ["james", 'ball'])
-  deepEqual(lunr.tokenizer(exclamationMark), ['stop'])
-  deepEqual(lunr.tokenizer(comma), ['first', 'second', 'and', 'third'])
-  deepEqual(lunr.tokenizer(brackets), ['tag', 'non-tag'])
-})
-
 test('handling multiple white spaces', function () {
   var testString = '  foo    bar  ',
       tokens = lunr.tokenizer(testString)
@@ -66,3 +50,16 @@ test('calling to string on passed val', function () {
   deepEqual(lunr.tokenizer(date).slice(0, 4), ['tue', 'jan', '01', '2013'])
 })
 
+test("splitting strings with hyphens", function () {
+  var simpleString = "take the New York-San Francisco flight",
+      tokens = lunr.tokenizer(simpleString)
+
+  deepEqual(tokens, ['take', 'the', 'new', 'york', 'san', 'francisco', 'flight'])
+})
+
+test("splitting strings with hyphens and spaces", function () {
+  var simpleString = "Solve for A - B",
+      tokens = lunr.tokenizer(simpleString)
+
+  deepEqual(tokens, ['solve', 'for', 'a', 'b'])
+})
